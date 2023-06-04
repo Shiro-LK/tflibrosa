@@ -7,6 +7,7 @@ __pycache__/
 # C extensions
 *.so
 .pytest_cache/
+tflibrosa.egg-info/
 # Distribution / packaging
 .Python
 build/
