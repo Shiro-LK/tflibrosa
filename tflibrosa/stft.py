@@ -240,7 +240,7 @@ class STFT(DFTBase):
         imag = imag[:, :, :]#.transpose(2, 3)
         # (batch_size, 1, time_steps, n_fft // 2 + 1)
 
-        return real, imag
+        return tf.expand_dims(real, axis=-1), tf.expand_dims(imag, axis=-1)
 
 class Spectrogram(tf.keras.layers.Layer):
     def __init__(self, n_fft=2048, hop_length=None, win_length=None,
@@ -316,7 +316,13 @@ class LogmelFilterBank(tf.keras.layers.Layer):
 
         # Mel spectrogram
         input = tf.cast(input, dtype=self.melW.dtype)
+        if len(input.shape) == 4:
+            input = tf.transpose(input, perm=[0,3,1,2])
+        
         mel_spectrogram = tf.matmul(input, self.melW)
+
+        if len(input.shape) == 4:
+            mel_spectrogram = tf.transpose(mel_spectrogram, perm=[0,2,3,1])
         #print("input mel: ",mel_spectrogram.dtype, input.dtype, self.melW.dtype)
 
         # (*, mel_bins)

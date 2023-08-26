@@ -35,7 +35,6 @@ if __name__ == "__main__":
     inputs = tf.keras.layers.Input((None, ))
     x = spectrogram_extractor(inputs)
     x = logmel_extractor(x)
-    x = tf.expand_dims(x, axis=-1)
     x = tf.concat((x, x, x), axis=-1)
     print(x.shape)
     backbone = tf.keras.applications.vgg16.VGG16(

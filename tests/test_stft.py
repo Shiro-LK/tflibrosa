@@ -41,10 +41,11 @@ def test_stft():
 
 
     frame_r, frame_i = spec(audio.reshape(1,-1))
-    frame_r, frame_i =frame_r.numpy(), frame_i.numpy()
+    frame_r, frame_i = frame_r.numpy(), frame_i.numpy()
     frame_librosa =  librosa.stft(audio, n_fft=n_fft, hop_length=hop_size, win_length=n_fft, window=window, center=center, pad_mode=pad_mode).T
     frame_librosa_r, frame_librosa_i = np.real(frame_librosa), np.imag(frame_librosa)
-    #print(frame_r.shape, frame_librosa_r.shape)
+    frame_librosa_r, frame_librosa_i = np.expand_dims(frame_librosa_r, axis=-1), np.expand_dims(frame_librosa_i, axis=-1)
+    print(frame_r.shape, frame_librosa_r.shape)
     assert frame_r.squeeze(0).shape == frame_librosa_r.shape and frame_i.squeeze(0).shape == frame_librosa_i.shape 
     assert np.abs(frame_r.squeeze(0) - frame_librosa_r).mean() < 1e-5
     assert np.abs(frame_i.squeeze(0) - frame_librosa_i).mean() < 1e-5
@@ -82,7 +83,7 @@ def test_mel_spectrogram():
 
     spectrogram = spectrogram_extractor(audio[None, :])
     mel_spectrogram = logmel_extractor(spectrogram).numpy().squeeze(0)
-
+    np_mel_spectrogram = np.expand_dims(np_mel_spectrogram, -1)
     #print(np_mel_spectrogram.shape, mel_spectrogram.shape)
     assert mel_spectrogram.shape == np_mel_spectrogram.shape
     assert np.abs(mel_spectrogram - np_mel_spectrogram).mean() < 1e-5

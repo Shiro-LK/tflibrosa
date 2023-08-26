@@ -10,7 +10,7 @@ def readme():
 
 setup(
     name='tflibrosa',
-    version='0.0.1',    
+    version='0.0.2',    
     description='Re-implementation of some librosa function for tensorflow. Reproduction from torchlibrosa.',
     author='Shiro-LK',
     author_email='shirosaki94@gmail.com',
